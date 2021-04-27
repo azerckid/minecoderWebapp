@@ -16,7 +16,7 @@ function sleep(ms) {
 
 async function delay_splash() {
   await SplashScreen.preventAutoHideAsync();
-  await sleep(3000);
+  await sleep(2000);
   await SplashScreen.hideAsync();
 }
 
