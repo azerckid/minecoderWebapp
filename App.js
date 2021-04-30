@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { WebView } from "react-native-webview";
 import * as SplashScreen from "expo-splash-screen";
+import * as LocalAuthentication from "expo-local-authentication";
 
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -31,6 +32,36 @@ export default function App() {
       </View>
     );
   };
+
+  const onFaceId = async () => {
+    try {
+      // Checking if device is compatible
+      const isCompatible = await LocalAuthentication.hasHardwareAsync();
+
+      if (!isCompatible) {
+        throw new Error("Your device isn't compatible.");
+      }
+
+      // Checking if device has biometrics records
+      const isEnrolled = await LocalAuthentication.isEnrolledAsync();
+
+      if (!isEnrolled) {
+        throw new Error("No Faces / Fingers found.");
+      }
+
+      // Authenticate user
+      await LocalAuthentication.authenticateAsync();
+
+      Alert.alert("Authenticated", "Welcome back !");
+    } catch (error) {
+      Alert.alert("An error as occured", error?.message);
+    }
+  };
+  
+  React.useEffect(() => {
+    onFaceId();
+  });
+
   return (
     <SafeAreaView style={styles.container}>
       <WebView
@@ -68,5 +99,8 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     justifyContent: "center",
+  },
+  text: {
+    textAlign: "center",
   },
 });
