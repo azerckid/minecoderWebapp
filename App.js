@@ -66,7 +66,7 @@ export default function App() {
     <SafeAreaView style={styles.container}>
       <WebView
         source={{
-          uri: "http://app.minecoder.net/",
+          uri: "https://app.minecoder.net/",
           method: "GET",
           headers: { "Cache-Control": "no-cache" },
         }}
